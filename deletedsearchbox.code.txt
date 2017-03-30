@@ -1,0 +1,12 @@
+   private void searchNameToolStripButton_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                this.exp_tabTableAdapter.SearchName(this.expenseDataSet1.exp_tab, itemNameToolStripTextBox.Text);
+            }
+            catch (System.Exception ex)
+            {
+                System.Windows.Forms.MessageBox.Show(ex.Message);
+            }
+
+        }

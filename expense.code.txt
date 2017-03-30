@@ -1,0 +1,106 @@
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Windows.Forms;
+
+namespace mvw1
+{
+    public partial class Expense : Form
+    {
+        public Expense()
+        {
+            InitializeComponent();
+        }
+
+        private void exp_tableBindingNavigatorSaveItem_Click(object sender, EventArgs e)
+        {
+            this.Validate();
+            this.exp_tableBindingSource.EndEdit();
+            this.tableAdapterManager.UpdateAll(this.expenseDataSet1);
+
+        }
+
+        private void Expense_Load(object sender, EventArgs e)
+        {
+            // TODO: This line of code loads data into the 'expenseDataSet1.exp_table' table. You can move, or remove it, as needed.
+            this.exp_tableTableAdapter.Fill(this.expenseDataSet1.exp_table);
+            timer1.Start();
+
+        }
+
+        private void newbutton_Click(object sender, EventArgs e)
+        {
+            this.exp_tableBindingSource.AddNew();
+        }
+
+        private void savebutton_Click(object sender, EventArgs e)
+        {
+            this.Validate();
+            this.exp_tableBindingSource.EndEdit();
+            this.tableAdapterManager.UpdateAll(this.expenseDataSet1);
+        }
+
+        private void delbutton_Click(object sender, EventArgs e)
+        {
+            this.exp_tableBindingSource.RemoveCurrent();
+        }
+
+        private void prevbutton_Click(object sender, EventArgs e)
+        {
+            exp_tableBindingSource.MovePrevious();
+        }
+
+        private void nextbutton_Click(object sender, EventArgs e)
+        {
+            exp_tableBindingSource.MoveNext();
+        }
+
+        private void homebutton_Click(object sender, EventArgs e)
+        {
+            this.Hide();
+            mvw2main prev = new mvw2main();
+            prev.Show();
+        }
+
+        private void Exitbutton_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+        int count = 0;
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+            count = exp_tableBindingSource.Count;
+            labelStatus.Text = "Number of rows = " + count.ToString();
+            if (count < 2)
+            {
+                nextbutton.Visible = false;
+                prevbutton.Visible = false;
+            }
+            else
+            {
+                nextbutton.Visible = true;
+                prevbutton.Visible = true;
+            }
+        }
+
+     
+
+        private void searchbutton_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                this.exp_tableTableAdapter.SearchName(this.expenseDataSet1.exp_table, textBox1.Text);
+            }
+            catch (System.Exception ex)
+            {
+                System.Windows.Forms.MessageBox.Show(ex.Message);
+            }
+
+        }
+
+    }
+}
